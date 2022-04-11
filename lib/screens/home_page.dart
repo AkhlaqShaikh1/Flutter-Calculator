@@ -12,27 +12,13 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   String userInput = '';
   String userResult = '';
+  
   List<String> buttons = [
-    "C",
-    "DEL",
-    "%",
-    "/",
-    "9",
-    "8",
-    "7",
-    "x",
-    "6",
-    "5",
-    "4",
-    "-",
-    "3",
-    "2",
-    "1",
-    "+",
-    "0",
-    ".",
-    "ANS",
-    "="
+    "C","DEL","%","/",
+    "9","8","7","x",
+    "6","5","4","-",
+    "3","2","1","+",
+    "0",".","ANS","="
   ];
   @override
   Widget build(BuildContext context) {
@@ -75,81 +61,99 @@ class _MyHomePageState extends State<MyHomePage> {
               itemCount: buttons.length,
               physics: const NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
-                //clear button
+                //clear
                 if (index == 0) {
-                  return CustomButton(
-                    text: buttons[index],
-                    color: Colors.green,
-                    textColor: Colors.white,
-                    buttonTapped: () {
-                      setState(() {
-                        userInput = '';
-                        userResult = '';
-                      });
-                    },
-                  );
-                  //DEL button
-                } else if (index == 1) {
-                  return CustomButton(
-                    text: buttons[index],
-                    color: Colors.red,
-                    textColor: Colors.white,
-                    buttonTapped: () {
-                      setState(() {
-                        userInput =
-                            userInput.substring(0, userInput.length - 1);
-                      });
-                    },
-                  );
-
-                  //Equal Button
-                } else if (index == buttons.length - 1) {
-                  return CustomButton(
-                    text: buttons[index],
-                    color: Colors.deepPurple,
-                    textColor: Colors.white,
-                    buttonTapped: () {
-                      setState(() {
-                        result();
-                      });
-                    },
-                  );
-                  //ANS button
-
-                } else if (index == buttons.length - 2) {
-                  return CustomButton(
-                    text: buttons[index],
-                    color: Colors.deepPurple,
-                    textColor: Colors.white,
-                    buttonTapped: () {
-                      setState(() {
-                        userInput = userResult;
-                      });
-                    },
-                  );
-                  //Rest of the buttons
-
-                } else {
-                  return CustomButton(
-                    text: buttons[index],
-                    color: isOperator(buttons[index])
-                        ? Colors.deepPurple
-                        : Colors.deepPurple[50]!,
-                    textColor: isOperator(buttons[index])
-                        ? Colors.white
-                        : Colors.deepPurple,
-                    buttonTapped: () {
-                      setState(() {
-                        userInput += buttons[index];
-                      });
-                    },
-                  );
+                  return clearButton(index);
+                }
+                //DEL
+                else if (index == 1) {
+                  return delButton(index);
+                }
+                //Equal
+                else if (index == buttons.length - 1) {
+                  return equalButton(index);
+                }
+                //ANS
+                else if (index == buttons.length - 2) {
+                  return ansButton(index);
+                }
+                //Rest of the buttons
+                else {
+                  return restOfTheButtons(index);
                 }
               },
             ),
           ),
         ],
       ),
+    );
+  }
+
+  CustomButton restOfTheButtons(int index) {
+    return CustomButton(
+      text: buttons[index],
+      color: isOperator(buttons[index])
+          ? Colors.deepPurple
+          : Colors.deepPurple[50]!,
+      textColor: isOperator(buttons[index]) ? Colors.white : Colors.deepPurple,
+      buttonTapped: () {
+        setState(() {
+          userInput += buttons[index];
+        });
+      },
+    );
+  }
+
+  CustomButton ansButton(int index) {
+    return CustomButton(
+      text: buttons[index],
+      color: Colors.deepPurple,
+      textColor: Colors.white,
+      buttonTapped: () {
+        setState(() {
+          userInput = userResult;
+        });
+      },
+    );
+  }
+
+  CustomButton equalButton(int index) {
+    return CustomButton(
+      text: buttons[index],
+      color: Colors.deepPurple,
+      textColor: Colors.white,
+      buttonTapped: () {
+        setState(() {
+          result();
+        });
+      },
+    );
+  }
+
+  CustomButton delButton(int index) {
+    return CustomButton(
+      text: buttons[index],
+      color: Colors.red,
+      textColor: Colors.white,
+      buttonTapped: () {
+        setState(() {
+          userInput = userInput.substring(0, userInput.length - 1);
+        });
+      },
+    );
+  }
+
+  CustomButton clearButton(int index) {
+    return CustomButton(
+      text: buttons[index],
+      color: Colors.green,
+      textColor: Colors.white,
+      buttonTapped: () {
+        setState(() {
+          userInput = '';
+          userResult = '';
+        });
+      },
     );
   }
 
@@ -163,7 +167,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void result() {
     String finalInput = userInput;
-    // finalInput.replaceAll('x', '*');
     finalInput = finalInput.replaceAll("x", "*");
 
     Parser p = Parser();
