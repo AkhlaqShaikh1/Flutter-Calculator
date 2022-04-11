@@ -12,7 +12,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   String userInput = '';
   String userResult = '';
-  
   List<String> buttons = [
     "C","DEL","%","/",
     "9","8","7","x",
@@ -156,7 +155,7 @@ class _MyHomePageState extends State<MyHomePage> {
       },
     );
   }
-
+  //Operators
   bool isOperator(String x) {
     if (x == '%' || x == "/" || x == "x" || x == "-" || x == "+" || x == "=")
       // ignore: curly_braces_in_flow_control_structures
@@ -164,11 +163,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return false;
   }
-
+  //Logic of how things are working
   void result() {
     String finalInput = userInput;
     finalInput = finalInput.replaceAll("x", "*");
-
+  
     Parser p = Parser();
     Expression exp = p.parse(finalInput);
     ContextModel cm = ContextModel();
